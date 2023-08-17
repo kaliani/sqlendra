@@ -1,0 +1,61 @@
+schema = """CREATE TABLE Products (
+    id INT PRIMARY KEY,
+    sw_corp_country VARCHAR(255),
+    sw_full_name TEXT,
+    sw_drug_form VARCHAR(255),
+    sw_brand VARCHAR(255),
+    sw_rx_otc VARCHAR(255),
+    sw_packing TEXT,
+    sw_nfc_corp VARCHAR(255),
+    sw_atc_code_one VARCHAR(255),
+    sw_atc_code_two VARCHAR(255),
+    sw_atc_code_three VARCHAR(255),
+    sw_launch INT
+);
+
+COMMENT ON COLUMN Products.id IS 'The primary key for the products table';
+COMMENT ON COLUMN Products.sw_corp_country IS 'The country of the software corporation';
+COMMENT ON COLUMN Products.sw_full_name IS 'The full name of the product';
+COMMENT ON COLUMN Products.sw_drug_form IS 'The form of the drug';
+COMMENT ON COLUMN Products.sw_brand IS 'The brand of the product';
+COMMENT ON COLUMN Products.sw_rx_otc IS 'RX or OTC designation for the product';
+COMMENT ON COLUMN Products.sw_packing IS 'The packing details for the product';
+COMMENT ON COLUMN Products.sw_nfc_corp IS 'NFC Corporation of the product';
+COMMENT ON COLUMN Products.sw_atc_code_one IS 'ATC code one of the product';
+COMMENT ON COLUMN Products.sw_atc_code_two IS 'ATC code two of the product';
+COMMENT ON COLUMN Products.sw_atc_code_three IS 'ATC code three of the product';
+COMMENT ON COLUMN Products.sw_launch IS 'Launch year of the product';
+
+id        |sw_corp_country|sw_full_name                                                                                                                         |sw_drug_form                                                                       |sw_brand                  |sw_rx_otc|sw_nfc_corp       |sw_atc_code_one                                      |sw_atc_code_two                                                             |sw_atc_code_three                                                |sw_launch|sw_name                   |
+----------+---------------+-------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+--------------------------+---------+------------------+-----------------------------------------------------+----------------------------------------------------------------------------+-----------------------------------------------------------------+---------+--------------------------+
+3315743097|Israel         |ASOTEN, Teva  (Israel), tabs 25 mg, #30                                                                                              |tabs 25 mg                                                                         |ASOTEN                    |Rx       |A Tablets         |C CARDIOVASCULAR SYSTEM                              |C07 BETA BLOCKING AGENTS                                                    |C07A BETA-BLOCKING AGENTS                                        |    39048|ASOTEN                    |
+1932693906|Russia         |TETRALGIN, Zdravo LLC (Ukraine, Kiev), tabs, #10                                                                                     |tabs                                                                               |TETRALGIN                 |Rx       |A Tablets         |N NERVOUS SYSTEM                                     |N02 ANALGESICS                                                              |N02B OTHER ANALGESICS AND ANTIPYRETICS                           |    40021|TETRALGIN                 |
+1575640366|Canada         |CARBALEX 200 mg, Bausch Health LLC (Ukraine), tabs 200 mg, #100                                                                      |tabs 200 mg                                                                        |CARBALEX                  |Rx       |A Tablets         |N NERVOUS SYSTEM                                     |N03 ANTIEPILEPTICS                                                          |N03A ANTIEPILEPTICS                                              |    39636|CARBALEX 200 mg           |
+
+CREATE TABLE Sales (
+    id INT PRIMARY KEY,
+    sw_year VARCHAR(255),
+    sw_period_name VARCHAR(255),
+    sw_period VARCHAR(255),
+    product_id INT REFERENCES Products (id),
+    sw_quantity FLOAT,
+    sw_volume FLOAT,
+    sw_price FLOAT,
+    sw_sro FLOAT
+);
+
+COMMENT ON COLUMN Sales.id IS 'The primary key for the sales table';
+COMMENT ON COLUMN Sales.sw_year IS 'The year of the sale';
+COMMENT ON COLUMN Sales.sw_period_name IS 'The name of the period for the sale. Week of the sale. Example W21';
+COMMENT ON COLUMN Sales.sw_period IS 'The period for the sale';
+COMMENT ON COLUMN Sales.product_id IS 'The ID of the product sold';
+COMMENT ON COLUMN Sales.sw_quantity IS 'The quantity of product sold';
+COMMENT ON COLUMN Sales.sw_volume IS 'The volume of product sold';
+COMMENT ON COLUMN Sales.sw_price IS 'The price of the product sold';
+COMMENT ON COLUMN Sales.sw_sro IS 'SRO value of the product sold';
+
+id |sw_year|sw_period_name|sw_period|product_id|sw_quantity|sw_volume |sw_price|sw_sro|date      |
+---+-------+--------------+---------+----------+-----------+----------+--------+------+----------+
+  0|2010   |W01           |2010 W01 |3334796425|     781.14|  37176.16|   47.58|  3.26|2010-01-04|
+  1|2010   |W01           |2010 W01 |3454270489|      584.7|  26731.28|   45.72|  3.92|2010-01-04|
+  2|2010   |W01           |2010 W01 |1461964732|     210.46|   6477.08|   30.76|  1.74|2010-01-04|

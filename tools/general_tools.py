@@ -1,6 +1,7 @@
 import os
 import sys
 from typing import Any, List, Optional, Tuple
+import pandas as pd
 from langchain.tools import BaseTool
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -58,3 +59,23 @@ class CreateQueryTool(BaseTool):
     
     def _arun(self, message: str):
         raise NotImplementedError("This tool does not support async")
+    
+
+class SQLQueryRunnerTool(BaseTool):
+    name = "SQLQueryRunnerTool"
+    description = "Use this tool when you need to run a SQL query in the PostgreSQL database"
+
+    def _run(self, query: str) -> Optional[List[Tuple[Any]]]:
+        conn = create_conn()
+
+        if conn is not None:
+            result_data = pd.read_sql(query, conn)
+            conn.close()
+            result = {"sql_code": query, "result": result_data}
+            return result
+        else:
+            print("Error! Cannot create connection to PostgreSQL database server")
+            return None
+    
+    def _arun(self, query: str) -> Optional[List[Tuple[Any]]]:
+        return NotImplementedError("This tool does not support asynchronous execution")

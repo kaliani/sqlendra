@@ -6,7 +6,7 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.callbacks import StreamlitCallbackHandler
 import streamlit as st
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from tools.general_tools import QueryResourceTool, CreateQueryTool
+from tools.general_tools import QueryResourceTool, CreateQueryTool, SQLQueryRunnerTool
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -22,7 +22,7 @@ st.title("SQL Query Assistant")
 
 st.markdown("This assistant can help generate SQL queries from natural language question!")
 
-tools = [QueryResourceTool(), CreateQueryTool()]
+tools = [QueryResourceTool(), CreateQueryTool(), SQLQueryRunnerTool()]
 llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
 conversational_memory = ConversationBufferWindowMemory(memory_key="chat_history", k=1, return_messages=True)
 

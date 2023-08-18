@@ -1,4 +1,5 @@
 
+import os
 from typing import List, Tuple, Any
 import psycopg2
 from psycopg2 import Error
@@ -8,11 +9,11 @@ def create_conn() -> psycopg2.extensions.connection:
     conn = None
     try:
         conn = psycopg2.connect(
-            user="postgres",
-            password="MakeSomeNoise1",
-            host="192.168.0.100",
-            port="5432",
-            database="postgres"
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            database=os.getenv("DB_NAME")
         )
     except Error as e:
         print(f"Error while connecting to PostgreSQL: {e}")

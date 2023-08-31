@@ -36,17 +36,19 @@ class CreateQueryTool(BaseTool):
     description = "Use this tool when you need to get SQL query from a text description of a user"
     
     def _run(self, message: str):
-        chat = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+        chat = ChatOpenAI(model_name='gpt-3.5-turbo-16k', temperature=0)
         
         main_template = """
-                        Based on the table schema below, write a SQL query that would answer the user's question:
-                        {engine}
+                        Based on the table schema
+                        {engine} 
+                        write a SQL query that would answer the user's question.
                         ALWAYS USE THE FORMAT INSTRUCTIONS PROVIDED. 
                         Failure to do so will result in a failed task.
                         Only extract the schemas and tables that are explicitly mentioned in the user's question. 
                         Do not extract any additional information beyond what the user has provided. 
                         Always return only a formatted SQL query without any other information or guesswork.
-                        Question: {question}"""
+                        Question: {question}
+                        """
         prompt_template = ChatPromptTemplate.from_template(main_template)
 
         with open("tools/data/schema.txt", "r") as f:

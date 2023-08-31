@@ -7,7 +7,7 @@ from tools.general_tools import QueryResourceTool, CreateQueryTool
 def define_agent(tools):
     tools = [QueryResourceTool(), CreateQueryTool()]
 
-    llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+    llm = ChatOpenAI(model_name='gpt-3.5-turbo-16k', temperature=0)
 
     conversational_memory = ConversationBufferWindowMemory(memory_key="chat_history", k=1, return_messages=True)
 
